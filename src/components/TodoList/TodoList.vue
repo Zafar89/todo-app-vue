@@ -3,7 +3,7 @@
   <div class="d-flex justify-content-between">
    <p class="h5">Todo List:</p>
    <select id="sortOrder" v-model="sortOrder" v-if="todos.length > 0">
-    <option value="default">New First</option>
+    <option value="default">Newest First</option>
     <option value="high-to-low">Critical to Optional</option>
     <option value="low-to-high">Optional to Critical</option>
    </select>
@@ -15,9 +15,11 @@
     :key="todo.id"
    >
     <div class="d-flex flex-column gap-2">
-     <span class="h6">{{ todo?.name }}</span>
+     <span class="h6">
+      {{ todo.name }}
+     </span>
      <span class="badge priority-pill bg-primary">
-      {{ PRIORITY_ORDER[todo?.priority] }}
+      {{ PRIORITY_NAMES.get(todo.priority) }}
      </span>
     </div>
     <div class="todo-actions">
@@ -46,7 +48,7 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
 import { useTodoStore } from "../../store/useTodoStore";
-import { PRIORITY_ORDER } from "../../types/TodoTypes";
+import { PRIORITY_NAMES } from "../../types/TodoTypes";
 
 export default defineComponent({
  name: "TodoList",
@@ -71,7 +73,7 @@ export default defineComponent({
     case "low-to-high":
      return todos.sort((a, b) => b.priority - a.priority);
     default:
-     return todos.sort((a, b) => b.id! - a.id!); // Newest first
+     return todos.sort((a, b) => b.id! - a.id!);
    }
   });
 
@@ -80,7 +82,7 @@ export default defineComponent({
    handleDeleteTodo,
    handleDeleteAllTodos,
    sortOrder,
-   PRIORITY_ORDER,
+   PRIORITY_NAMES,
   };
  },
 });

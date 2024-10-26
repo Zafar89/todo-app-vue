@@ -1,10 +1,5 @@
 import { ref, computed } from "vue";
-
-type TodoType = {
- id?: number;
- name: string;
- priority: number;
-};
+import { TodoType } from "../types/TodoTypes";
 
 const todos = ref<TodoType[]>([]);
 
