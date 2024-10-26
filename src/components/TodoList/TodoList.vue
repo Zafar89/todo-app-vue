@@ -16,14 +16,19 @@
    >
     <div class="d-flex flex-column gap-2">
      <span class="h6">
-      {{ todo.name }}
+      <input type="text" class="border-0" :value="todo.name" />
      </span>
      <span class="badge priority-pill bg-primary">
       {{ PRIORITY_NAMES.get(todo.priority) }}
      </span>
     </div>
     <div class="todo-actions">
-     <button class="btn btn-link text-decoration-none">Edit</button>
+     <button
+      class="btn btn-link text-decoration-none"
+      @click="handleTodoUpdate(todo)"
+     >
+      Edit
+     </button>
      <button
       class="btn btn-link text-decoration-none"
       @click="handleDeleteTodo(todo.id!)"
@@ -48,12 +53,12 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
 import { useTodoStore } from "../../store/useTodoStore";
-import { PRIORITY_NAMES } from "../../types/TodoTypes";
+import { PRIORITY_NAMES, TodoType } from "../../types/TodoTypes";
 
 export default defineComponent({
  name: "TodoList",
  setup() {
-  const { getTodos, deleteTodo, deleteAllTodos } = useTodoStore();
+  const { getTodos, deleteTodo, deleteAllTodos, todoToUpdate } = useTodoStore();
 
   const sortOrder = ref("default");
 
@@ -63,6 +68,10 @@ export default defineComponent({
 
   const handleDeleteAllTodos = () => {
    deleteAllTodos();
+  };
+
+  const handleTodoUpdate = (todo: TodoType) => {
+   todoToUpdate.value = todo;
   };
 
   const sortedTodos = computed(() => {
@@ -81,6 +90,7 @@ export default defineComponent({
    todos: sortedTodos,
    handleDeleteTodo,
    handleDeleteAllTodos,
+   handleTodoUpdate,
    sortOrder,
    PRIORITY_NAMES,
   };

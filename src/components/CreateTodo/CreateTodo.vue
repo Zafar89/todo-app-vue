@@ -1,7 +1,7 @@
 <template>
  <form name="createTodoForm" @submit.prevent>
   <div class="card">
-   <div class="card-header">Add Todo</div>
+   <div class="card-header">{{ todoToUpdate ? "Update" : "Create" }} Todo</div>
    <div class="card-body">
     <div class="todo-form-container">
      <div class="mb-3">
@@ -43,8 +43,12 @@
     </div>
    </div>
    <div class="card-footer">
-    <button type="submit" class="btn btn-primary w-100" @click="createTodo">
-     Submit
+    <button
+     type="submit"
+     class="btn btn-primary w-100"
+     @click="handleFormSubmit"
+    >
+     {{ todoToUpdate ? "Update" : "Create" }} Todo
     </button>
    </div>
   </div>
@@ -52,16 +56,51 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, watch } from "vue";
 import { useCreateTodo } from "./CreateTodo.script";
+import { useTodoStore } from "../../store/useTodoStore";
 
 const { todoText, priority, priorityOptions, errors, createTodo } =
  useCreateTodo();
+const { todoToUpdate, updateTodo } = useTodoStore();
 
 export default defineComponent({
  name: "CreateTodo",
  setup() {
-  return { todoText, priority, priorityOptions, errors, createTodo };
+  watch(
+   () => todoToUpdate.value,
+   (updatedValue) => {
+    console.log(updatedValue, "here");
+    if (updatedValue) {
+     todoText.value = updatedValue.name;
+     priority.value = updatedValue.priority;
+    } else {
+     todoText.value = "";
+     priority.value = 1;
+    }
+   },
+   { immediate: true }
+  );
+
+  const handleFormSubmit = () => {
+   if (todoToUpdate.value) {
+    updateTodo({
+     id: todoToUpdate?.value?.id,
+     name: todoText.value,
+     priority: priority.value,
+    });
+    todoToUpdate.value = undefined;
+   } else createTodo();
+  };
+
+  return {
+   todoText,
+   priority,
+   priorityOptions,
+   errors,
+   todoToUpdate,
+   handleFormSubmit,
+  };
  },
 });
 </script>

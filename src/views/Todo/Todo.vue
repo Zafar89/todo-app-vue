@@ -13,7 +13,7 @@ export default defineComponent({
 </script>
 
 <template>
- <div class="d-flex justify-content-center p-4">
+ <div class="d-flex justify-content-center p-4 bg-light">
   <div class="d-flex flex-column w-50 gap-3">
    <div class="todo-form"><CreateTodo /></div>
    <div class="todo-list"><TodoList /></div>

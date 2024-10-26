@@ -2,6 +2,7 @@ import { ref, computed } from "vue";
 import { TodoType } from "../types/TodoTypes";
 
 const todos = ref<TodoType[]>([]);
+const todoToUpdate = ref<TodoType | undefined>(undefined);
 
 const loadTodos = () => {
  const storedTodos = localStorage.getItem("todos");
@@ -22,6 +23,12 @@ export const useTodoStore = () => {
   localStorage.setItem("todos", JSON.stringify(todos.value));
  };
 
+ const updateTodo = (todo: TodoType) => {
+  todos.value = todos.value.filter((t) => t.id !== todo.id);
+  todos.value.push(todo);
+  localStorage.setItem("todos", JSON.stringify(todos.value));
+ };
+
  const deleteTodo = (id: number | undefined) => {
   if (!id) return;
   todos.value = todos.value.filter((todo) => todo.id !== id);
@@ -34,5 +41,12 @@ export const useTodoStore = () => {
   localStorage.setItem("todos", JSON.stringify(todos.value));
  };
 
- return { getTodos, addTodo, deleteTodo, deleteAllTodos };
+ return {
+  getTodos,
+  addTodo,
+  updateTodo,
+  deleteTodo,
+  deleteAllTodos,
+  todoToUpdate,
+ };
 };
