@@ -9,7 +9,7 @@ const loadTodos = () => {
  todos.value = storedTodos ? JSON.parse(storedTodos) : [];
 };
 
-loadTodos();
+if (typeof window != "undefined") loadTodos();
 
 export const useTodoStore = () => {
  const getTodos = computed(() => todos.value.sort((a, b) => b.id! - a.id!));
@@ -36,7 +36,7 @@ export const useTodoStore = () => {
  };
 
  const deleteAllTodos = () => {
-  if (!confirm("Are you sure?")) return;
+  if (typeof window !== "undefined" && !confirm("Are you sure?")) return;
   todos.value = [];
   localStorage.setItem("todos", JSON.stringify(todos.value));
  };

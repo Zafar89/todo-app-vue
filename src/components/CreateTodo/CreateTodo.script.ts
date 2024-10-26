@@ -33,14 +33,12 @@ export function useCreateTodo() {
 
  const createTodo = () => {
   if (!validateForm()) return;
-
   const newTodo = {
    name: todoText.value,
    priority: priority.value,
   };
 
   addTodo(newTodo);
-
   todoText.value = "";
   priority.value = PRIORITY_ORDER.CRITICAL;
  };
