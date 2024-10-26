@@ -1,6 +1,6 @@
 import { ref, reactive } from "vue";
 import { useTodoStore } from "../../store/useTodoStore";
-import { PRIORITIES, PRIORITY_ORDER } from "../../types/TodoTypes";
+import { PRIORITIES, PRIORITY_ORDER, TodoType } from "../../types/TodoTypes";
 
 interface TodoErrors {
  todoText: string | null;
@@ -11,6 +11,7 @@ export function useCreateTodo() {
  const todoText = ref<string>("");
  const priority = ref<number>(PRIORITY_ORDER.CRITICAL);
  const { addTodo } = useTodoStore();
+ const { updateTodo } = useTodoStore();
 
  const priorityOptions = [
   { label: PRIORITIES.CRITICAL, value: PRIORITY_ORDER.CRITICAL },
@@ -44,11 +45,20 @@ export function useCreateTodo() {
   priority.value = PRIORITY_ORDER.CRITICAL;
  };
 
+ const editTodo = (todo: TodoType) => {
+  if (!validateForm()) return false;
+  updateTodo(todo);
+  todoText.value = "";
+  priority.value = PRIORITY_ORDER.CRITICAL;
+  return true;
+ };
+
  return {
   todoText,
   priority,
   priorityOptions,
   errors,
   createTodo,
+  editTodo,
  };
 }

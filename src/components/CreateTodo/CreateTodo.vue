@@ -59,10 +59,11 @@
 import { defineComponent, watch } from "vue";
 import { useCreateTodo } from "./CreateTodo.script";
 import { useTodoStore } from "../../store/useTodoStore";
+import { PRIORITY_ORDER } from "../../types/TodoTypes";
 
-const { todoText, priority, priorityOptions, errors, createTodo } =
+const { todoText, priority, priorityOptions, errors, createTodo, editTodo } =
  useCreateTodo();
-const { todoToUpdate, updateTodo } = useTodoStore();
+const { todoToUpdate } = useTodoStore();
 
 export default defineComponent({
  name: "CreateTodo",
@@ -76,7 +77,7 @@ export default defineComponent({
      priority.value = updatedValue.priority;
     } else {
      todoText.value = "";
-     priority.value = 1;
+     priority.value = PRIORITY_ORDER.CRITICAL;
     }
    },
    { immediate: true }
@@ -84,12 +85,12 @@ export default defineComponent({
 
   const handleFormSubmit = () => {
    if (todoToUpdate.value) {
-    updateTodo({
+    const updated = editTodo({
      id: todoToUpdate?.value?.id,
      name: todoText.value,
      priority: priority.value,
     });
-    todoToUpdate.value = undefined;
+    if (updated) todoToUpdate.value = undefined;
    } else createTodo();
   };
 

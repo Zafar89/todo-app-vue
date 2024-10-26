@@ -16,7 +16,7 @@
    >
     <div class="d-flex flex-column gap-2">
      <span class="h6">
-      <input type="text" class="border-0" :value="todo.name" />
+      {{ todo.name }}
      </span>
      <span class="badge priority-pill bg-primary">
       {{ PRIORITY_NAMES.get(todo.priority) }}
