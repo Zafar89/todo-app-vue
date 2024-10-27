@@ -2,6 +2,25 @@
 
 Basic Todo App with CRUD functionality built using Vue3, typescript and composition API.
 
+## How to run app
+
+```bash
+npm install
+npm run dev
+```
+
+For unit tests (Vitest)
+
+```bash
+npm run test
+```
+
+For E2E (Cypress)
+
+```bash
+Work in progress
+```
+
 ### Deployed
 
 Navigate to: [https://todo-vue-comp.netlify.app/](https://todo-vue-comp.netlify.app/)
